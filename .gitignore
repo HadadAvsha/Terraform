@@ -5,6 +5,7 @@
 *.tfvars
 *.old
 *.idea
+secret.tf
 
 
 #Ignore thumbnails created by Windows
