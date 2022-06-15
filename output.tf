@@ -1,11 +1,11 @@
-output "db_passsword" {
-  value     = random_password.db_password.result
-  sensitive = true
+output "vmss_public_ip_fqdn" {
+   value = azurerm_public_ip.vmss.fqdn
 }
-#output "app_passsword" {
-#  value     = random_password.app_password[*].result
-#  sensitive = true
-#}
-output "public_ip_address" {
-  value = azurerm_public_ip.extIP
+
+output "jumpbox_public_ip_fqdn" {
+   value = azurerm_public_ip.jumpbox.fqdn
+}
+
+output "jumpbox_public_ip" {
+   value = azurerm_public_ip.jumpbox.ip_address
 }

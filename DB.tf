@@ -58,11 +58,11 @@ resource "azurerm_subnet_network_security_group_association" "db-subnet_nsg_asso
 
 # Create DB virtual machine
 
-resource "random_password" "db_password" {
-  length           = 8
-  special          = true
-  override_special = "_%@"
-}
+#resource "random_password" "db_password" {
+#  length           = 8
+#  special          = true
+#  override_special = "_%@"
+#}
 
 resource "azurerm_linux_virtual_machine" "postgres-VM" {
   name                  = "postgres-VM"
@@ -72,7 +72,7 @@ resource "azurerm_linux_virtual_machine" "postgres-VM" {
   size                  = "Standard_B2s"
 
   os_disk {
-    name                 = "myOsDisk"
+    name                 = "DB-Disk"
     caching              = "ReadWrite"
     storage_account_type = "Premium_LRS"
   }
@@ -86,6 +86,6 @@ resource "azurerm_linux_virtual_machine" "postgres-VM" {
 
   computer_name                   = "postgres"
   admin_username                  = "postgres"
-  admin_password                  = random_password.db_password.result
+  admin_password                  = var.app_pass
   disable_password_authentication = false
 }

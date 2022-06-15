@@ -1,57 +1,31 @@
+variable "resource_group_name" {
+   description = "Name of the resource group in which the resources will be created"
+   default     = "myResourceGroup"
+}
+
 variable "location" {
-  default = "North Central US"
-  type    = string
+   default = "eastus"
+   description = "Location where resources will be created"
 }
 
-variable "rsg_name" {
-  type    = string
-  default = "week5-base"
+variable "tags" {
+   description = "Map of the tags to use for the resources that are deployed"
+   type        = map(string)
+   default = {
+      environment = "codelab"
+   }
 }
 
-variable "resource_prefix" {
-  default = "TF"
-  type    = string
+variable "application_port" {
+   description = "Port that you want to expose to the external load balancer"
+   default     = 80
 }
 
-variable "node_address_space" {
-  type    = list(string)
-  default = ["1.0.0.0/16"]
+variable "admin_user" {
+   description = "User name to use as the admin account on the VMs that will be part of the VM scale set"
+   default     = "azureuser"
 }
 
-#variable for network range
-
-variable "node_address_prefix" {
-  type    = list(string)
-  default = ["1.0.0.0/24"]
+variable "admin_password" {
+   description = "Default password for admin account"
 }
-variable "db_address_prefix" {
-  type    = list(string)
-  default = ["1.0.1.0/24"]
-}
-
-variable "app_ip_addresses" {
-  default = [
-    "10.0.0.4",
-    "10.0.0.5",
-    "10.0.0.6",
-  ]
-}
-
-#variable for Environment
-variable "Environment" {
-  type    = string
-  default = "test"
-}
-
-variable "node_count" {
-  type    = number
-  default = "3"
-}
-
-#variable "app_NICs" {
-#  type    = map(string)
-#  default = azurerm_network_interface.app_nic.*.${count.index}
-#}
-
-
-
