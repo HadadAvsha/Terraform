@@ -29,6 +29,14 @@ variable "db_address_prefix" {
   default = ["1.0.1.0/24"]
 }
 
+variable "app_ip_addresses" {
+  default = [
+    "10.0.0.4",
+    "10.0.0.5",
+    "10.0.0.6",
+  ]
+}
+
 #variable for Environment
 variable "Environment" {
   type    = string
