@@ -79,5 +79,11 @@ variable "image_resource_group_name" {
   type    = string
 }
 
-
+#variable "currentRSG" {
+#  default = "Week5-VMSS"
+#}
+#
+#variable "datanic" {
+#  default = "vmss/0"
+#}
 
