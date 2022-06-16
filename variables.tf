@@ -17,18 +17,25 @@ variable "rsg_name" {
   default = "Week5-VMSS"
 }
 
+#configure your ip to get ssh permission
+
+variable "enterip" {
+  description = "enter ip to gain ssh permissions"
+  type        = string
+}
+
 #variable for network range
 
 variable "node_address_space" {
-  type    = list(string)
-  default = ["1.0.0.0/16"]
+  #  type    = list(string)
+  default = ["10.0.0.0/16"]
 }
 
 #variable for app subnet range
 
 variable "node_address_prefix" {
-  type    = list(string)
-  default = ["1.0.0.0/24"]
+  #  type    = list(string)
+  default = ["10.0.0.0/24"]
 }
 
 variable "application_port" {
@@ -39,8 +46,8 @@ variable "application_port" {
 #variable for db subnet range
 
 variable "db_address_prefix" {
-  type    = list(string)
-  default = ["1.0.1.0/24"]
+  #  type    = list(string)
+  default = ["10.0.1.0/24"]
 }
 
 

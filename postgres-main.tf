@@ -30,12 +30,23 @@ resource "azurerm_network_security_group" "db_nsg" {
 
   security_rule {
     name                       = "5432"
-    priority                   = 100
+    priority                   = 1000
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "*"
+    source_port_range          = "5432"
+    destination_port_range     = "5432"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+  security_rule {
+    name                       = "22toDB"
+    priority                   = 2000
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "22"
+    destination_port_range     = "22"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
@@ -74,7 +85,7 @@ resource "azurerm_postgresql_flexible_server" "postgres_flex_server" {
   administrator_login    = var.db_admin_user
   administrator_password = var.db_admin_password
   storage_mb             = 32768
-  sku_name               = "Standard_B1ms"
+  sku_name               = "B_Standard_B1ms"
   backup_retention_days  = 7
 
   depends_on = [azurerm_private_dns_zone_virtual_network_link.link]

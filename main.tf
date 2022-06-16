@@ -20,12 +20,12 @@ resource "azurerm_virtual_network" "vnet" {
   address_space       = var.node_address_space
 }
 
-resource "random_string" "fqdn" {
-  length  = 6
-  special = false
-  upper   = false
-  number  = false
-}
+#resource "random_string" "fqdn" {
+#  length  = 6
+#  special = false
+#  upper   = false
+#  number  = false
+#}
 
 #creating subnet for VMSS (app)
 
@@ -45,7 +45,7 @@ resource "azurerm_network_security_group" "VMSS_nsg" {
 
   security_rule {
     name                       = "8080"
-    priority                   = 100
+    priority                   = 200
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -54,6 +54,18 @@ resource "azurerm_network_security_group" "VMSS_nsg" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
+  security_rule {
+    name                       = "22in"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "22"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
 }
 
 #assosiating NSG to VMSS(app) subnet
@@ -77,12 +89,6 @@ resource "azurerm_linux_virtual_machine_scale_set" "VMSS" {
 
   source_image_id = data.azurerm_shared_image_version.VMSSImage.id
 
-  #  source_image_reference {
-  #      publisher = "Canonical"
-  #      offer     = "0001-com-ubuntu-server-focal"
-  #      sku       = "20_04-lts-gen2"
-  #      version   = "latest"
-  #  }
 
   network_interface {
     name    = "VMSSnic"
