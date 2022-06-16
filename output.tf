@@ -1,11 +1,4 @@
 output "vmss_public_ip_fqdn" {
-   value = azurerm_public_ip.vmss.fqdn
+  value = azurerm_public_ip.pub_ip.fqdn
 }
 
-output "jumpbox_public_ip_fqdn" {
-   value = azurerm_public_ip.jumpbox.fqdn
-}
-
-output "jumpbox_public_ip" {
-   value = azurerm_public_ip.jumpbox.ip_address
-}

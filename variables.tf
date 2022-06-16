@@ -1,31 +1,76 @@
-variable "resource_group_name" {
-   description = "Name of the resource group in which the resources will be created"
-   default     = "myResourceGroup"
+variable "name_prefix" {
+  default     = "TF-postgres"
+  description = "Prefix of the resource name."
 }
+
+#location for creation
 
 variable "location" {
-   default = "eastus"
-   description = "Location where resources will be created"
+  default = "North Central US"
+  type    = string
 }
 
-variable "tags" {
-   description = "Map of the tags to use for the resources that are deployed"
-   type        = map(string)
-   default = {
-      environment = "codelab"
-   }
+# resource group name
+
+variable "rsg_name" {
+  type    = string
+  default = "Week5-VMSS"
+}
+
+#variable for network range
+
+variable "node_address_space" {
+  type    = list(string)
+  default = ["1.0.0.0/16"]
+}
+
+#variable for app subnet range
+
+variable "node_address_prefix" {
+  type    = list(string)
+  default = ["1.0.0.0/24"]
 }
 
 variable "application_port" {
-   description = "Port that you want to expose to the external load balancer"
-   default     = 80
+  description = "Port that you want to expose to the external load balancer"
+  default     = 8080
 }
 
-variable "admin_user" {
-   description = "User name to use as the admin account on the VMs that will be part of the VM scale set"
-   default     = "azureuser"
+#variable for db subnet range
+
+variable "db_address_prefix" {
+  type    = list(string)
+  default = ["1.0.1.0/24"]
 }
 
-variable "admin_password" {
-   description = "Default password for admin account"
+
+#variable for Environment
+variable "Environment" {
+  type    = string
+  default = "test"
 }
+
+#variables for image
+
+variable "image_version_name" {
+  default = "0.0.1"
+  type    = string
+}
+
+variable "image_name" {
+  default = "avsha_app_001"
+  type    = string
+}
+
+variable "image_gallery_name" {
+  default = "avsha"
+  type    = string
+}
+
+variable "image_resource_group_name" {
+  default = "image"
+  type    = string
+}
+
+
+

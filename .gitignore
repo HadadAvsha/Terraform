@@ -6,7 +6,7 @@
 *.old
 *.idea
 secret.tf
-
+secrets.tf
 
 #Ignore thumbnails created by Windows
 Thumbs.db
