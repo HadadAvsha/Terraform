@@ -14,15 +14,9 @@ variable "location" {
 
 variable "rsg_name" {
   type    = string
-  default = "Week5-VMSS"
+  default = "Week5-TF-VMss-bonus"
 }
 
-#configure your ip to get ssh permission
-
-variable "enterip" {
-  description = "enter ip to gain ssh permissions"
-  type        = string
-}
 
 #variable for network range
 
@@ -79,11 +73,5 @@ variable "image_resource_group_name" {
   type    = string
 }
 
-#variable "currentRSG" {
-#  default = "Week5-VMSS"
-#}
-#
-#variable "datanic" {
-#  default = "vmss/0"
-#}
+
 

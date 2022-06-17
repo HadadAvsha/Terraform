@@ -5,6 +5,15 @@ data "azurerm_shared_image_version" "VMSSImage" {
   resource_group_name = var.image_resource_group_name
 }
 
+#create random string for unique and random usage
+
+resource "random_string" "fqdn" {
+  length  = 6
+  special = false
+  upper   = false
+  number  = false
+}
+
 
 # Create a resource group
 resource "azurerm_resource_group" "rg" {
@@ -20,12 +29,7 @@ resource "azurerm_virtual_network" "vnet" {
   address_space       = var.node_address_space
 }
 
-#resource "random_string" "fqdn" {
-#  length  = 6
-#  special = false
-#  upper   = false
-#  number  = false
-#}
+
 
 #creating subnet for VMSS (app)
 
@@ -66,6 +70,18 @@ resource "azurerm_network_security_group" "VMSS_nsg" {
     destination_address_prefix = "*"
   }
 
+  security_rule {
+   name                       = "8080out"
+    priority                   = 100
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
 }
 
 #assosiating NSG to VMSS(app) subnet
@@ -86,19 +102,30 @@ resource "azurerm_linux_virtual_machine_scale_set" "VMSS" {
   admin_username                  = var.admin_user
   admin_password                  = var.admin_password
   disable_password_authentication = false
+  depends_on                      = [azurerm_network_security_group.VMSS_nsg]
+#  source_image_id                 = data.azurerm_shared_image_version.VMSSImage.id
 
-  source_image_id = data.azurerm_shared_image_version.VMSSImage.id
+ # create original image
+
+#source_image_reference {
+#    publisher = "Canonical"
+#    offer     = "0001-com-ubuntu-server-focal"
+#    sku       = "20_04-lts-gen2"
+#    version   = "latest"
+#  }
 
 
   network_interface {
-    name    = "VMSSnic"
-    primary = true
+    name                      = "VMSSnic"
+    primary                   = true
+    network_security_group_id = azurerm_network_security_group.VMSS_nsg.id
 
     ip_configuration {
       name                                   = "IPConfiguration"
       primary                                = true
       subnet_id                              = azurerm_subnet.vmss-subnet.id
       load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.bepool.id]
+      load_balancer_inbound_nat_rules_ids    = [azurerm_lb_nat_pool.lbnatpool.id]
     }
   }
 
@@ -125,7 +152,7 @@ resource "azurerm_monitor_autoscale_setting" "scaling" {
 
     capacity {
       default = 3
-      minimum = 1
+      minimum = 3
       maximum = 5
     }
 
